@@ -14,7 +14,7 @@ class eatStaticTag extends eatStatic {
 	public function getAll(){
 		// TODO - read from folder (seperate out), or index file
 		$tags = array();
-		$dir = DATA_ROOT.'/cache/tags';
+		$dir = CACHE_ROOT.'/tags';
 
 		if(is_dir($dir)){
 			//echo 'is a dir';
@@ -69,7 +69,7 @@ class eatStaticTag extends eatStatic {
 	}
 	
 	public function load() {
-		$json_file = DATA_ROOT.'/cache/tags/'.$this->fileNameFromName();
+		$json_file = CACHE_ROOT.'/tags/'.$this->fileNameFromName();
 		if(file_exists($json_file)){
 			$set_data = json_decode($this->read_file($json_file));
 			$this->items = $set_data->items;
@@ -79,7 +79,7 @@ class eatStaticTag extends eatStatic {
 	}
 	
 	public function loadFromFileName() {
-		$json_file = DATA_ROOT.'/cache/tags/'.$this->file_name;
+		$json_file = CACHE_ROOT.'/tags/'.$this->file_name;
 		if(file_exists($json_file)){
 			$tag_data = json_decode($this->read_file($json_file));
 			$this->name = $tag_data->name;
@@ -88,7 +88,7 @@ class eatStaticTag extends eatStatic {
 	}
 	
 	public function save() {
-		$json_file = DATA_ROOT.'/cache/tags/'.$this->fileNameFromName();
+		$json_file = CACHE_ROOT.'/tags/'.$this->fileNameFromName();
 		if(file_exists($json_file)){
 			// TODO make backup - timestamp + username in filename
 		}
@@ -103,7 +103,7 @@ class eatStaticTag extends eatStatic {
 	}
 	
 	public function exists(){
-		if(file_exists(DATA_ROOT.'/cache/tags/'.$this->fileNameFromName())){
+		if(file_exists(CACHE_ROOT.'/tags/'.$this->fileNameFromName())){
 			return true;
 		}
 	}
@@ -116,7 +116,7 @@ class eatStaticTag extends eatStatic {
 	
 	public function delete(){
 		if($this->exists()){
-			$file = DATA_ROOT.'/cache/tags/'.$this->fileNameFromName();
+			$file = CACHE_ROOT.'/tags/'.$this->fileNameFromName();
 			unlink($file);
 		}
 	}
