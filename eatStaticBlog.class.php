@@ -15,14 +15,18 @@ class eatStaticBlog extends eatStatic {
 	var $post_folder;
 	var $recent_limit = POSTS_PER_PAGE;
 	var $post_files = array();
+	var $gallery_ids = array();
 
 	function __construct() {
 		$this->post_folder = DATA_ROOT.'/posts/';
 	}
 	
-	public function getPostFiles(){
+	public function getPostFiles($use_cache=USE_CACHE){
+
+		// reset post files array
+		$this->post_files = array();
 		
-		if(USE_CACHE){
+		if($use_cache){
 			// see if cache file exists
 			if(file_exists(CACHE_ROOT.'/all_posts.json')){
 				$this->post_files = json_decode(eatStatic::read_file(CACHE_ROOT.'/all_posts.json'));
@@ -46,7 +50,7 @@ class eatStaticBlog extends eatStatic {
 		            //echo "filename: $file : filetype: " . filetype($this->post_folder . $file) . "\n";
 					if(
 						(filetype($this->post_folder . $file) == 'file') && 
-						(substr($file,-3) == "txt")
+						(substr($file,-3) == "txt" || substr($file,-2) == "md")
 					){
 						// for each post found
 						$this->post_files[] = $this->post_folder . $file;
@@ -58,7 +62,7 @@ class eatStaticBlog extends eatStatic {
 		}
 	}
 	
-	public function getRecentPosts(){
+	public function getRecentPosts($limit=false){
 		
 		$posts = array();
 		//$post_count = 0;
@@ -84,6 +88,10 @@ class eatStaticBlog extends eatStatic {
 			//$post_count++;
 			$posts[] = $post;
 		
+		}
+
+		if($limit){
+			$posts = array_slice($posts, 0, $limit);
 		}
 
 		return $posts;
@@ -200,9 +208,33 @@ class eatStaticBlog extends eatStatic {
 		}
 		return $posts;
 	}
+
+	/**
+	 * @desc return list of posts: slug, date, title 
+	 * 	     as this is for admin only, always return uncached
+	 */
+	public function getPostList(){
+		$this->getPostFiles();
+		$all_files = array_reverse($this->post_files);
+		foreach($all_files as $post_file){
+			// for each post found
+			$post = new eatStaticBlogPost;
+			$post->data_file_path = $post_file;
+			$post->hydrate();
+
+			$item = array();
+			$item['slug'] = $post->slug;
+			$item['date'] = $post->date;
+			$item['title'] = $post->date;
+			//$post_count++;
+			$posts[] = $item;
+		}
+
+		return $posts;
+	}
 	
 	// taken from http://www.zachstronaut.com/posts/2009/01/20/php-relative-date-time-string.html
-	public function time_elapsed_string($ptime) {
+	public static function time_elapsed_string($ptime) {
         $etime = time() - $ptime;
 
         if ($etime < 1) {
@@ -226,7 +258,7 @@ class eatStaticBlog extends eatStatic {
         }
     }
     
-    public function obsoleteWarning($ptime){
+    public static function obsoleteWarning($ptime){
          $etime = time() - $ptime;
          
          $years = round($etime /(12 * 30 * 24 * 60 * 60));
@@ -331,6 +363,8 @@ class eatStaticBlogPost extends eatStatic {
 	var $uri;
 	var $next_url = '';
 	var $prev_url = '';
+	var $source_format = 'text';
+	var $fields = array(); // store custom meta fields
 	
 	function hydrate(){
 		
@@ -338,6 +372,16 @@ class eatStaticBlogPost extends eatStatic {
 		if($this->raw_data == ''){
 			// no post content found
 		}
+
+		$ext = $this->getExtension($this->data_file_path);
+
+
+
+		if($ext == 'md'){
+			$this->source_format = 'markdown';
+			require_once(LIB_ROOT."/php-markdown/Markdown.inc.php");
+		}
+
 		$parts =  explode("\n", $this->raw_data);
 		
 		$str = '';
@@ -348,6 +392,7 @@ class eatStaticBlogPost extends eatStatic {
 		
 		$body = true;
 		$meta = false;
+		$raw_body = '';
 		
 		// the rest is body
 		for($i=1; $i<sizeof($parts); $i++){
@@ -365,11 +410,16 @@ class eatStaticBlogPost extends eatStatic {
 				}
 				
 				if($body){
-					// formatted body - line breaks need to be replaced with br, but not between html elements
-					if(substr($parts[$i],-1) != '>'){
-						$format_str = $format_str.$parts[$i]."<br />\n";
-					} else {
-						$format_str = $format_str.$parts[$i]."\n";
+
+					$raw_body = $raw_body.$parts[$i]."\n";
+
+					// formatted body - for text format, line breaks need to be replaced with br, but not between html elements
+					if($this->source_format == 'text'){
+						if(substr($parts[$i],-1) != '>'){
+							$format_str = $format_str.$parts[$i]."<br />\n";
+						} else {
+							$format_str = $format_str.$parts[$i]."\n";
+						}
 					}
 				}
 				
@@ -384,12 +434,28 @@ class eatStaticBlogPost extends eatStatic {
 			}
 			
 		}
+
+		if($this->source_format == 'markdown'){
+			// remove hashes from title
+			$this->title = str_replace('#', '', $this->title);
+
+			// parse the markdown into HTML
+			$this->formatted_body = Michelf\Markdown::defaultTransform($raw_body);
+
+		} else {
+			$this->formatted_body = $format_str;
+		}
+
+
 		
 		$this->body = $str;
-		$this->formatted_body = $format_str;
 		
 		$this->file_name = basename($this->data_file_path);
-		$this->slug = str_replace('.txt','',$this->file_name);
+		if($this->source_format == 'markdown'){
+			$this->slug = str_replace('.md','',$this->file_name);
+		} else {
+			$this->slug = str_replace('.txt','',$this->file_name);
+		} 
 		$this->date = substr($this->file_name, 0, 10);
 		$this->nice_date = date(NICE_DATE_FORMAT, strtotime($this->date));
 		$this->timestamp = strtotime($this->date);
@@ -429,6 +495,7 @@ class eatStaticBlogPost extends eatStatic {
 		$post_date = substr($file_name, 0, 10);
 		$post_time = strtotime($post_date);
 		$post_slug = str_replace('.txt','',$file_name);
+		$post_slug = str_replace('.md','',$file_name);
 
 		if(WP_URLS){
 		    $date_str = date('Y', $post_time).'-'.date('m', $post_time).'-'.date('d', $post_time);
@@ -460,6 +527,18 @@ class eatStaticBlogPost extends eatStatic {
 			case "description":
 				$this->description = $value;
 			break;
+			case "author":
+				$this->author = $value;
+			break;
+			default:
+				$this->fields[$key] = $value;
+			break;
+		}
+	}
+
+	function getField($key){
+		if(isset($this->fields[$key])){
+			return $this->fields[$key];
 		}
 	}
 	

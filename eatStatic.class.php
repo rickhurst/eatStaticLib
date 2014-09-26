@@ -25,7 +25,7 @@ class eatStatic {
 	/**
 	 * @desc checks that a slug only contains letters, numbers, hypens and underscores
 	 */
-	public function slugFormatOK($str){
+	public static function slugFormatOK($str){
 		if (preg_match('/^[a-zA-Z0-9_-]+$/',$str)){
 			return true;
 		} else {
@@ -164,7 +164,7 @@ class eatStatic {
 	/**
 	 * @desc convenience method to return a block
 	 */
-	public function block($block){
+	public static function block($block){
 		require_once(EATSTATIC_ROOT."/eatStaticBlock.class.php");
 		$block = new eatStaticBlock($block);
 		return $block->getBlock();
@@ -301,6 +301,27 @@ class eatStatic {
 			return str_replace(array("\r\n", "\n", "\r"), '',$str);
 		} else {
 			return '';
+		}
+	}
+
+	/**
+	 * @desc check for custom version of specified template in root of
+	 * skin or module
+	 * or use version from eatStatic/modules/core/templates
+	 */
+	function template($template, $module='core'){
+		global $production, $post, $path, $show_prev_next, $blog, $page_class;
+		$custom = false;
+		if(file_exists(ROOT."/skin/".SKIN.'/templates/'.$template)){
+			require(ROOT."/skin/".SKIN.'/templates/'.$template);
+			$custom = true;
+		} 
+		if(file_exists(ROOT."/skin/".SKIN.'/modules/'.$module.'/templates/'.$template)){
+			require(ROOT."/skin/".SKIN.'/modules/'.$module.'/templates/'.$template);
+			$custom = true;
+		} 
+		if(!$custom){
+			require EATSTATIC_ROOT.'/modules/'.$module.'/templates/'.$template;
 		}
 	}
 	
