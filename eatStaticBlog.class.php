@@ -495,7 +495,7 @@ class eatStaticBlogPost extends eatStatic {
 		$post_date = substr($file_name, 0, 10);
 		$post_time = strtotime($post_date);
 		$post_slug = str_replace('.txt','',$file_name);
-		$post_slug = str_replace('.md','',$file_name);
+		$post_slug = str_replace('.md','',$post_slug);
 
 		if(WP_URLS){
 		    $date_str = date('Y', $post_time).'-'.date('m', $post_time).'-'.date('d', $post_time);
