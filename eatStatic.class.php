@@ -309,7 +309,7 @@ class eatStatic {
 	 * skin or module
 	 * or use version from eatStatic/modules/core/templates
 	 */
-	function template($template, $module='core'){
+	public static function template($template, $module='core'){
 		global $production, 
 				$post, 
 				$path, 
