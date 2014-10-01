@@ -11,7 +11,7 @@ class eatStaticTag extends eatStatic {
 	public $items = array();
 	public $file_name;
 	
-	public function getAll(){
+	public static function getAll(){
 		// TODO - read from folder (seperate out), or index file
 		$tags = array();
 		$dir = CACHE_ROOT.'/tags';
@@ -26,7 +26,8 @@ class eatStaticTag extends eatStatic {
 					){
 						
 						// for each file found
-						$ext = end(explode(".", $file));
+						$arr = explode(".", $file);
+						$ext = end($arr);
 						$ext = strtolower($ext);
 						//die($ext);
 						if($ext == 'json'){
