@@ -310,7 +310,16 @@ class eatStatic {
 	 * or use version from eatStatic/modules/core/templates
 	 */
 	function template($template, $module='core'){
-		global $production, $post, $path, $show_prev_next, $blog, $page_class;
+		global $production, 
+				$post, 
+				$path, 
+				$show_prev_next, 
+				$blog, 
+				$page_class, 
+				$page_title,
+				$meta_keywords,
+				$meta_description;
+				
 		$custom = false;
 		if(file_exists(ROOT."/skin/".SKIN.'/templates/'.$template)){
 			require(ROOT."/skin/".SKIN.'/templates/'.$template);
