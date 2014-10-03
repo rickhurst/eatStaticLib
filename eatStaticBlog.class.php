@@ -592,7 +592,8 @@ class eatStaticGallery extends eatStatic {
 		    if ($dh = opendir($this->gallery_folder)) {
 		        while (($file = readdir($dh)) !== false) {
 					
-					$ext = end(explode(".", $file));
+					$arr = explode(".", $file);
+					$ext = end($arr);
 					
 					
 					

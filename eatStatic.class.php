@@ -108,7 +108,7 @@ class eatStatic {
 	 * @desc convenience method for getting vars from post, cookies, and querystring
 	 * hat-tip: this is adapted from a method copied from Craig Francis
 	 */
-	function getValue($variable, $method = 'request', $validation = 0) {
+	public static function getValue($variable, $method = 'request', $validation = 0) {
 
 		$value = '';
 		$method = strtolower($method);
