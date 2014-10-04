@@ -334,8 +334,6 @@ class eatStatic {
 		}
 	}
 	
-
-	
 }
 
 ?>

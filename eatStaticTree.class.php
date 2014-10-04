@@ -37,28 +37,52 @@ class eatStaticTree extends eatStatic {
 	 */
 	public function getPage($sub_path){
 
+		global $page;
+
 		require_once(EATSTATIC_ROOT."/eatStaticPage.class.php");
 
 		$page = new eatStaticPage();
 
+		$page_exists = false;
+
 		if(file_exists($this->root.$sub_path.".md")){
 			$raw_content = $this->read_file($this->root.$sub_path.".md");
-			$ext = "md";
-		} else {
+			$page->content_mode = 'markdown';
+			$page_exists = true;
+		}
+
+		if(file_exists($this->root.$sub_path.".php")){
+			$ext = "php";
+			$page->content_mode = 'php';
+
+			$page_exists = true;
+		}
+
+		if(!$page_exists){
 			return;
 		}
 
-		switch($ext){
-			case "md":
+		switch($page->content_mode){
+			case "markdown":
 				// extract meta
 				$split_content = explode('--', $raw_content);
 				if(sizeOf($split_content) > 1){
 					$raw_meta = $split_content[1];
 				}
+
+				$parts =  explode("\n", $raw_content);
+				$page->title = str_replace('#', '', $parts[0]);
+
 				// process remainder and return
 				require_once(LIB_ROOT."/php-markdown/Markdown.inc.php");
 				$page->content = Michelf\Markdown::defaultTransform($split_content[0]);
 
+			break;
+			case "php":
+				ob_start();
+				include $this->root.$sub_path.".php";
+				$page->content = ob_get_contents();
+				ob_end_clean();
 			break;
 			case "html":
 				// TODO: get first char of filename to see if it is a partial
