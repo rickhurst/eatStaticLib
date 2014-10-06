@@ -36,7 +36,7 @@ class eatStatic {
 	/**
 	 * @desc checks that a file name only contains letters, numbers, hypens, underscores and dots
 	 */
-	public function fileNameOK($str){
+	public static function fileNameOK($str){
 		if (preg_match('/^[a-zA-Z0-9._-]+$/',$str)){
 			return true;
 		} else {
