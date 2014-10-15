@@ -461,7 +461,7 @@ class eatStaticBlogPost extends eatStatic {
 		$this->timestamp = strtotime($this->date);
 		
 		// get gallery items if there are any
-		$gallery = new eatStaticGallery(str_replace('.txt','/', $this->file_name ));
+		$gallery = new eatStaticGallery($this->slug.'/');
 		$this->gallery_items = $gallery->gallery_items;
 		
 		// set up the URI
