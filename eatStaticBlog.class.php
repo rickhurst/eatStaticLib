@@ -98,13 +98,13 @@ class eatStaticBlog extends eatStatic {
 		
 	}
 
-	public function getSlicedPosts($page){
+	public function getSlicedPosts($page, $posts_per_page=POSTS_PER_PAGE){
 		$this->getPostFiles();
 		$all_files = array_reverse($this->post_files);
 
 		//print_r($all_files);
 
-		$sliced = array_slice($all_files, (POSTS_PER_PAGE*$page), POSTS_PER_PAGE);
+		$sliced = array_slice($all_files, ($posts_per_page*$page), $posts_per_page);
 
 		//echo (POSTS_PER_PAGE*$page);
 
@@ -393,6 +393,7 @@ class eatStaticBlogPost extends eatStatic {
 		$body = true;
 		$meta = false;
 		$raw_body = '';
+		$raw_meta = '';
 		
 		// the rest is body
 		for($i=1; $i<sizeof($parts); $i++){
@@ -426,8 +427,10 @@ class eatStaticBlogPost extends eatStatic {
 				// get meta info
 				if($meta && eatStatic::stripLineBreaks($parts[$i]) != '--'){
 					//die('meta:'.$parts[$i]);
+					
 					if($parts[$i] != ''){
 						$this->handleMeta($parts[$i]);
+						$raw_meta = $raw_meta.$parts[$i]."\n";
 					}
 				}
 				
@@ -447,7 +450,8 @@ class eatStaticBlogPost extends eatStatic {
 		}
 
 
-		
+		$this->raw_body = $raw_body;
+		$this->raw_meta = $raw_meta;
 		$this->body = $str;
 		
 		$this->file_name = basename($this->data_file_path);
@@ -457,6 +461,7 @@ class eatStaticBlogPost extends eatStatic {
 			$this->slug = str_replace('.txt','',$this->file_name);
 		} 
 		$this->date = substr($this->file_name, 0, 10);
+		$this->slug_trimmed = str_replace($this->date.'-', '', $this->slug);
 		$this->nice_date = date(NICE_DATE_FORMAT, strtotime($this->date));
 		$this->timestamp = strtotime($this->date);
 		
