@@ -8,8 +8,8 @@ class eatStaticError {
 	
 	private $errors = array();
 	
-	public function add($key, $val){
-		$this->errors[$key] = $val;
+	public function add($type='default', $val){
+		$this->errors[] = array($type => $val);
 	}
 	
 	public function exists($str=''){
@@ -18,8 +18,8 @@ class eatStaticError {
 				return true;
 			}
 		} else {
-			foreach($this->errors as $key=>$val){
-				if($key == $str) return true;
+			foreach($this->errors as $error){
+				if(isset($error[$str])) return true;
 			}
 		}
 	}
@@ -30,14 +30,14 @@ class eatStaticError {
 		echo '</pre>';
 	}
 	
-	public function listAll($str=''){
+	public function listAll($str='default'){
 		?>
 		<ul class="errors">
 		<?php
-		foreach($this->errors as $key=>$val){
-			if($key == $str || $str == ''){
+		foreach($this->errors as $error){
+			if(isset($error[$str])){
 			?>
-			<li><?php echo $val ?></li>
+			<li><?php echo $error ?></li>
 			<?php
 			}
 		}
