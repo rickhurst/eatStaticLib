@@ -8,8 +8,8 @@ class eatStaticAdminPostsController {
 			case "":
 				$this->listPosts(0);
 			break;
-			case "edit":
-				$this->editPost($path[3]);
+			case "edit-raw":
+				$this->editRawPost($path[3]);
 			break;
 		}
 	}
@@ -23,9 +23,9 @@ class eatStaticAdminPostsController {
 
 	}
 
-	private function editPost($slug){
+	private function editRawPost($slug){
 
-		$page = new adminPage('post_edit.php');
+		$page = new adminPage('post_raw_edit.php');
 
 		$post = new eatStaticBlogPost;
 
@@ -42,7 +42,12 @@ class eatStaticAdminPostsController {
 		}
 
 		if(eatStatic::getValue('postback') == '1'){
-			$post->slug = eatStatic::getValue('slug','post');
+			$post->raw_data = trim(eatStatic::getValue('raw_data','post'));
+
+			// copy current file data to backups
+			if(copy($post->data_file_path, DATA_ROOT.'/posts/backup/'.$post->file_name.'.'.eatStatic::timestamp().'.bak')){
+				eatStatic::write_file($post->raw_data, $post->data_file_path);
+			}
 		}
 
 		$page->context['post'] = $post;

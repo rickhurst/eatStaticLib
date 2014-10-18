@@ -515,29 +515,37 @@ class eatStaticBlogPost extends eatStatic {
 	
 	private function handleMeta($str){
 		$parts = explode(":",$str);
-		$key = $parts[0];
-		$value = $parts[1];
-		switch($key){
-			case "tags":
-				$tags = explode(",", $value);
-				foreach($tags as $tag){
-				    if(trim($tag) != ''){
-					    $this->tags[] = trim($tag);
-				    }
-				}
-			break;
-			case "keywords":
-				$this->keywords = $value;
-			break;
-			case "description":
-				$this->description = $value;
-			break;
-			case "author":
-				$this->author = $value;
-			break;
-			default:
-				$this->fields[$key] = $value;
-			break;
+		//print_r($parts);
+		// echo "----<br>";
+		// echo "[".$str."]<br>";
+		// print_r($parts);
+		// echo count($parts)."<br>";
+
+		if(count($parts) > 1){
+			$key = $parts[0];
+			$value = $parts[1];
+			switch($key){
+				case "tags":
+					$tags = explode(",", $value);
+					foreach($tags as $tag){
+					    if(trim($tag) != ''){
+						    $this->tags[] = trim($tag);
+					    }
+					}
+				break;
+				case "keywords":
+					$this->keywords = $value;
+				break;
+				case "description":
+					$this->description = $value;
+				break;
+				case "author":
+					$this->author = $value;
+				break;
+				default:
+					$this->fields[$key] = $value;
+				break;
+			}
 		}
 	}
 

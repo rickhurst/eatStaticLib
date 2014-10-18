@@ -60,7 +60,7 @@ class eatStatic {
 	/**
 	 * @desc writes file containing specified string
 	 */
-	function write_file($str, $path){
+	public static function write_file($str, $path){
 		$fh = fopen($path, 'w') or die("can't open file");
 		fwrite($fh, $str);
 		fclose($fh);
@@ -207,6 +207,10 @@ class eatStatic {
 			return date("Y-m-d H:i:s");
 		}
 		// TO DO: other formats
+	}
+
+	public static function timestamp(){
+		return date("YmdHis");
 	}
 	
 	/**

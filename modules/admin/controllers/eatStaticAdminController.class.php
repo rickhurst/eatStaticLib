@@ -27,6 +27,10 @@ class eatStaticAdminController {
 				require_once "eatStaticAdminPostsController.class.php";
 				new eatStaticAdminPostsController($path);
 			break;
+			case "images":
+				require_once "eatStaticAdminImagesController.class.php";
+				new eatStaticAdminImagesController($path);
+			break;
 		}
 
 	}
