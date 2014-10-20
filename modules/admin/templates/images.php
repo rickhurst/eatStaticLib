@@ -5,9 +5,12 @@
 	<input type="hidden" name="sub_path" value="<?php echo $this->getContext('sub_path') ?>" />
 	<div class="form-group">
 		<label>Upload Image</label>
-		<input  type="file" name="file" accept="image/*" capture="camera" />
+		<span class="btn btn-file"><input  type="file" name="file" accept="image/*" capture="camera" /></span>
 	</div>
-	<button class="btn btn-primary" type="submit">Upload</button>
+	<div class="form-group">
+		<button class="btn btn-primary" type="submit">Upload</button>
+	</div>
+	
 </form>
 <?php if($this->getContext('message') != ''): ?>
 <div class="alert alert-success"><?php echo $this->getContext('message') ?></div>

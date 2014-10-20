@@ -3,7 +3,7 @@
 //die();
 ?>
 
-<h2>Edit Post</h2>
+<h2><?php echo $this->getContext('title') ?></h2>
 <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 
 	<input type="hidden" name="postback" value="1" />

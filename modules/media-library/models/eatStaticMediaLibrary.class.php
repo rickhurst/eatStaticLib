@@ -60,6 +60,8 @@ class eatStaticMediaLibrary {
 		//print_r($_FILES);
 
 		$filename = basename($_FILES[$input_name]['name']);
+		$filename = strtolower($filename);
+		$filename = str_replace(' ', '-', $filename);
 		$target_path = DATA_ROOT.'/'.$base_folder.'/'.$sub_path.'/'.$filename;
 
 		if(move_uploaded_file($_FILES[$input_name]['tmp_name'], $target_path)){

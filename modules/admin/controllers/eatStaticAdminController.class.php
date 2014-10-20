@@ -4,7 +4,7 @@ class eatStaticAdminController {
 
 
 	public $path;
-	public $login_exceptions = ['/admin/login']; // TODO this needs to be dynamic
+	public $login_exceptions = Array('/admin/login'); // TODO this needs to be dynamic
 
 	function __construct($path){
 
