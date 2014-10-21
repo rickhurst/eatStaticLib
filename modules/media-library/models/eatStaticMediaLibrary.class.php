@@ -11,6 +11,7 @@ class eatStaticMediaLibrary {
 	function __construct($root_path, $sub_path){
 		$this->path = $root_path.$sub_path;
 		$this->sub_path = $sub_path;
+		$this->root_path = $root_path;
 	}
 
 	public function getContents(){
@@ -70,6 +71,14 @@ class eatStaticMediaLibrary {
 			//echo 'not moved:'.$_FILES[$input_name]['tmp_name'];
 		}
 
+	}
+
+	public function createSubFolder($name){
+		if($name != ''){
+			$name = str_replace(' ', '-', $name);
+			mkdir($this->root_path.$name);
+		}
+		
 	}
 
 }

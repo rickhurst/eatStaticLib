@@ -13,6 +13,9 @@ class eatStaticAdminImagesController {
 				// for MVP we only need a single level
 				$this->listContents($path[3]);
 			break;
+			case "delete-file":
+				$this->deleteFile($path[3], $path[4]);
+			break;
 		}
 	}
 
@@ -31,10 +34,23 @@ class eatStaticAdminImagesController {
 			}
 		}
 
+		// create new folder
+		if(eatStatic::getValue('postback','post') == "2"){
+			if(eatStatic::getValue('folder','post')){
+				$folder = $lib->createSubFolder(eatStatic::getValue('folder','post'));
+			}
+		}
+
+
 		$page->context['contents'] = $lib->getContents();
 		$page->context['title'] = "Images";
 		$page->context['sub_path'] = $sub_path;
 		$page->render();
+	}
+
+	private function deleteFile($folder, $file){
+		unlink(DATA_ROOT.'/images/'.$folder.'/'.$file);
+		header('location:/admin/images/folder/'.$folder);
 	}
 }
 ?>
