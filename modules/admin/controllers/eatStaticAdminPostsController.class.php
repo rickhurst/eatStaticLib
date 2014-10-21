@@ -28,6 +28,9 @@ class eatStaticAdminPostsController {
 			case "publish":
 				$this->publishPost($path[3]);
 			break;
+			case "make-draft":
+				$this->makeDraft($path[3]);
+			break;
 		}
 	}
 
@@ -162,18 +165,40 @@ class eatStaticAdminPostsController {
 	}
 
 	private function publishPost($slug){
-		$draft_folder = $post_folder = DATA_ROOT.'/posts/draft/';
+		$draft_folder  = DATA_ROOT.'/posts/draft/';
 		if(file_exists($draft_folder.$slug.'.txt')){
-			$post_file = $post_folder.$slug.'.txt';
+			$post_file = $draft_folder.$slug.'.txt';
 		}
 		if(file_exists($draft_folder.$slug.'.md')){
-			$post_file = $post_folder.$slug.'.md';
+			$post_file = $draft_folder.$slug.'.md';
 		}
 
 		if(file_exists($post_file)){
 			if(copy($post_file, str_replace('/draft/','/', $post_file))){
 				unlink($post_file);
 				header('location:/admin/posts/');
+				die();
+			}
+		}
+	}
+
+	private function makeDraft($slug){
+		$draft_folder = DATA_ROOT.'/posts/draft/';
+		$post_folder = DATA_ROOT.'/posts/';
+
+		if(file_exists($post_folder.$slug.'.txt')){
+			$post_file = $post_folder.$slug.'.txt';
+			$file_name = $slug.'.txt';
+		}
+		if(file_exists($post_folder.$slug.'.md')){
+			$post_file = $post_folder.$slug.'.md';
+			$file_name = $slug.'.md';
+		}
+
+		if(file_exists($post_file)){
+			if(copy($post_file, $draft_folder.$file_name)){
+				unlink($post_file);
+				header('location:/admin/posts/drafts/');
 				die();
 			}
 		}

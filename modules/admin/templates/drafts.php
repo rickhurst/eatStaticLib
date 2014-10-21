@@ -1,6 +1,9 @@
 <?php //print_r($this) ?>
 <h2><?php echo $this->getContext('title') ?></h2>
-<a href="/admin/posts/edit-raw/draft/new/">Create new draft</a>
+<div class="form-group">
+	<a class="btn btn-primary" href="/admin/posts/edit-raw/draft/new/">Create new draft</a>
+</div>
+<p><a href="/admin/posts/">Published posts</a></p>
 <table class="table table-bordered table-striped">
 <?php foreach($this->getContext('posts') as $post): ?>
 	<tr>
