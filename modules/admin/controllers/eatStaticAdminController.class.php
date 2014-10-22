@@ -47,7 +47,7 @@ class eatStaticAdminController {
 
 class adminPage {
 
-	public $context = [];
+	public $context = Array();
 	public $stub;
 	public $layout = 'base_layout';
 
