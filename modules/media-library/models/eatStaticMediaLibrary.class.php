@@ -5,8 +5,8 @@ class eatStaticMediaLibrary {
 	public $path; // /site/data/images/cats/ginger/
 	public $root_path; // /site/data/images/
 	public $sub_path; // cats/ginger/
-	public $files = [];
-	public $folders = [];
+	public $files = Array();
+	public $folders = Array();
 
 	function __construct($root_path, $sub_path){
 		$this->path = $root_path.$sub_path;
