@@ -43,6 +43,7 @@ define('LOGIN_URL', $es_login_url);
 define('STORAGE_TYPE', $es_storage_type);
 define('SNAPSHOT', $es_snapshot);
 define('ADMIN_ENABLED', $es_admin_enabled);
+define('ADMIN_ROOT', $es_admin_root);
 
 define('WP_URLS', $es_wp_urls);
 
@@ -59,13 +60,6 @@ if(SQL_FS){
     require_once(EATSTATIC_ROOT."/eatStaticSQL.class.php");
     require_once(EATSTATIC_ROOT."/eatStaticFakeFS.class.php");
 }
-
-//$login_exceptions = array('login','logged-out');
-if(ADMIN_ENABLED){
-    require 'eatStatic_admin_local_settings.php';
-    require_once(EATSTATIC_ROOT."/eatStaticAdminController.class.php");
-}
-
 
 // create an error object to store error messages
 $err = new eatStaticError;
