@@ -92,15 +92,24 @@ class adminHomeController {
 
 
 class adminLoginController {
+
 	function __construct($path){
 
 		//print_r($path);
 		//die();
+		require_once(LIB_ROOT.'/CSRF_Protect.php');
+		$csrf = new CSRF_Protect();
 
 		switch($path[2]){
 			case "":
 
+				$page = new adminPage('login_form.php');
+
+
+
 				if(eatStatic::getValue('postback','post') == '1'){
+
+					$csrf->verifyRequest();
 
 					$email = eatStatic::getValue('email','post');
 					$password = eatStatic::getValue('password','post');
@@ -108,14 +117,16 @@ class adminLoginController {
 						$_SESSION['admin'] = 1;
 						$_SESSION['admin_user'] = $email;
 						eatStaticAdminController::redirect("");
-
+					} else {
+						$page->context['error_message'] = 'Invalid username or password';
 					}
 				}
 
-				$page = new adminPage('login_form.php');
+				
 				$page->context['title'] = "Log in";
 				$page->context['show_navbar'] = false;
 				$page->context['body_class'] = 'login-page';
+				$page->context['csrf'] = $csrf;
 				$page->render();
 			break;
 

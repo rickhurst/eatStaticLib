@@ -1,4 +1,5 @@
       <form class="form-signin" role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <?php $this->getContext('csrf')->echoInputField(); ?> 
       	<input type="hidden" name="postback" value="1" />
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="email" name="email" class="form-control" placeholder="Email address" required autofocus>
