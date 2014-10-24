@@ -6,7 +6,7 @@
 	<input type="hidden" name="sub_path" value="<?php echo $this->getContext('sub_path') ?>" />
 	<div class="form-group">
 		<label>Upload Image</label>
-		<span class="btn btn-file"><input  type="file" name="file" accept="image/*" capture="camera" /></span>
+		<span class="btn btn-file"><input  type="file" name="file" accept="image/*" /></span>
 	</div>
 	<div class="form-group">
 		<button class="btn btn-primary" type="submit">Upload</button>
