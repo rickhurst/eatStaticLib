@@ -1,6 +1,6 @@
 <?php //print_r($this) ?>
 <h2><?php echo $this->getContext('title') ?></h2>
-<p><a href="/admin/posts/drafts">Drafts</a></p>
+<p><a href="<?php echo $this->getContext('site_root') ?>posts/drafts">Drafts</a></p>
 <table class="table table-bordered table-striped">
 <?php foreach($this->getContext('posts') as $post): ?>
 	<?php //print_r($post) ?>

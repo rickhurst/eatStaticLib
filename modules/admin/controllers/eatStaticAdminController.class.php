@@ -97,17 +97,13 @@ class adminLoginController {
 
 	function __construct($path){
 
-		//print_r($path);
-		//die();
-		require_once(LIB_ROOT.'/CSRF_Protect.php');
-		$csrf = new CSRF_Protect();
+		require_once(EATSTATIC_ROOT.'/eatStaticCSRF.class.php');
+		$csrf = new eatStaticCSRF();
 
 		switch($path[2]){
 			case "":
 
 				$page = new adminPage('login_form.php');
-
-
 
 				if(eatStatic::getValue('postback','post') == '1'){
 

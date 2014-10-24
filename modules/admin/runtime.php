@@ -1,5 +1,5 @@
 <?php
-session_start(0);
+//session_start(0);
 require_once "controllers/eatStaticAdminController.class.php";
 
 /**
