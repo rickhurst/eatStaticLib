@@ -34,7 +34,7 @@
 		<?php if($item->item_type == 'folder'): ?>
 		<td>(folder)</td>
 		<td><?php echo $item->name ?></td>
-		<td><a href="/admin/images/folder<?php echo $item->sub_path ?>">open</a></td>
+		<td><a href="<?php echo $this->getContext('site_root') ?>images/folder<?php echo $item->sub_path ?>">open</a></td>
 		<?php endif; ?>
 
 		<?php if($item->item_type == 'file'): ?>
@@ -44,8 +44,8 @@
 		<td><?php echo $item->mime_type ?></td>
 		<td><?php echo $item->name ?></td>
 		<td>
-			<a href="/admin/images/file/<?php echo $item->sub_path ?>">view</a> |
-			<a href="/admin/images/delete-file/<?php echo $item->sub_path ?>" onclick="return confirm('sure?')">delete</a>
+			<a href="<?php echo $this->getContext('site_root') ?>images/file/<?php echo $item->sub_path ?>">view</a> |
+			<a href="<?php echo $this->getContext('site_root') ?>images/delete-file/<?php echo $item->sub_path ?>" onclick="return confirm('sure?')">delete</a>
 		</td>
 		<?php endif; ?>
 	</tr>

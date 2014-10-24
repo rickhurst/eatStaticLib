@@ -8,9 +8,9 @@
 		<td><?php echo $post->date ?></td>
 		<td><?php echo $post->title ?></td>
 		<td>
-			<a href="/admin/posts/edit-raw/<?php echo $post->slug ?>">Edit (Raw)</a> | 
-			<a href="/admin/posts/delete/<?php echo $post->slug ?>" onclick="return confirm('sure?')">Delete</a> |
-			<a href="/admin/posts/make-draft/<?php echo $post->slug ?>">Make Draft</a>
+			<a href="<?php echo $this->getContext('site_root') ?>posts/edit-raw/<?php echo $post->slug ?>">Edit (Raw)</a> | 
+			<a href="<?php echo $this->getContext('site_root') ?>posts/delete/<?php echo $post->slug ?>" onclick="return confirm('sure?')">Delete</a> |
+			<a href="<?php echo $this->getContext('site_root') ?>posts/make-draft/<?php echo $post->slug ?>">Make Draft</a>
 		</td>
 	</tr>
 <?php endforeach; ?>

@@ -4,9 +4,11 @@ class eatStaticAdminController {
 
 
 	public $path;
-	public $login_exceptions = Array('/admin/login'); // TODO this needs to be dynamic
+	public $login_exceptions = Array(); // TODO this needs to be dynamic
 
 	function __construct($path){
+
+		$this->login_exceptions[] = ADMIN_ROOT.'login';
 
 		$this->path = $path;
 
@@ -37,8 +39,7 @@ class eatStaticAdminController {
 
 	public static function redirect($uri){
 
-			// TODO: allow override of $site_base from local settings
-			$site_base = "/admin/";
+			$site_base = ADMIN_ROOT;
 			header('location:'.$site_base.$uri);
 			die();
 	}
@@ -54,6 +55,7 @@ class adminPage {
 	function __construct($stub=''){
 
 		$this->context['show_navbar'] = true;
+		$this->context['site_root'] = ADMIN_ROOT;
 
 		if($stub != ''){
 			$this->stub = $stub;

@@ -109,7 +109,7 @@ class eatStaticAdminPostsController {
 			} else {
 				$post->data_file_path = $post_folder.$post->file_name;
 				eatStatic::write_file($post->raw_data, $post->data_file_path);
-				header('location:/admin/posts/drafts/');
+				header('location:'.ADMIN_ROOT.'posts/drafts/');
 				die();
 			}
 		}
@@ -134,7 +134,7 @@ class eatStaticAdminPostsController {
 			copy($post->data_file_path, DATA_ROOT.'/posts/backup/'.$post->file_name.'.'.eatStatic::timestamp().'.bak');
 			unlink($post->data_file_path);
 
-			header('location:/admin/posts/');
+			header('location:'.ADMIN_ROOT.'posts/');
 			die();
 		}
 	}
@@ -176,7 +176,7 @@ class eatStaticAdminPostsController {
 		if(file_exists($post_file)){
 			if(copy($post_file, str_replace('/draft/','/', $post_file))){
 				unlink($post_file);
-				header('location:/admin/posts/');
+				header('location:'.ADMIN_ROOT.'posts/');
 				die();
 			}
 		}
@@ -198,7 +198,7 @@ class eatStaticAdminPostsController {
 		if(file_exists($post_file)){
 			if(copy($post_file, $draft_folder.$file_name)){
 				unlink($post_file);
-				header('location:/admin/posts/drafts/');
+				header('location:'.ADMIN_ROOT.'posts/drafts/');
 				die();
 			}
 		}

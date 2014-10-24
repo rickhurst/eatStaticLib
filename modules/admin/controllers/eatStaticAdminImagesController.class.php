@@ -50,7 +50,7 @@ class eatStaticAdminImagesController {
 
 	private function deleteFile($folder, $file){
 		unlink(DATA_ROOT.'/images/'.$folder.'/'.$file);
-		header('location:/admin/images/folder/'.$folder);
+		header('location:'.ADMIN_ROOT.'images/folder/'.$folder);
 	}
 }
 ?>
