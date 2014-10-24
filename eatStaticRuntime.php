@@ -62,7 +62,7 @@ if(SQL_FS){
 
 //$login_exceptions = array('login','logged-out');
 if(ADMIN_ENABLED){
-    require 'eatStatic_admin_local_settings.php';
+    //require 'eatStatic_admin_local_settings.php';
     require_once(EATSTATIC_ROOT."/eatStaticAdminController.class.php");
 }
 
