@@ -368,6 +368,11 @@ class eatStaticBlogPost extends eatStatic {
 	var $prev_url = '';
 	var $source_format = 'text';
 	var $fields = array(); // store custom meta fields
+
+	// flexi schema
+	var $schema = array(); // array of field definitions for non-standard fields
+	var $schema_data = "{}"; // json string
+	var $schema_data_values = Array(); // populated values
 	
 	function hydrate(){
 		
