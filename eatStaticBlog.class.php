@@ -348,11 +348,14 @@ class eatStaticPaginator {
 class eatStaticBlogPost extends eatStatic {
 	var $title;
 	var $body;
+	var $raw_body;
+	var $raw_meta;
 	var $formatted_body;
 	var $data_file_path;
 	var $raw_data;
 	var $file_name;
 	var $slug;
+	var $slug_trimmed;
 	var $date;
 	var $nice_date;
 	var $gallery_items = array();

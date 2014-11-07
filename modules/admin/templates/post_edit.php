@@ -8,7 +8,8 @@
 
 	<input type="hidden" name="postback" value="1" />
 	<input type="hidden" name="file_name" value="<?php echo $this->getContext('post')->file_name ?>" />
-
+	<input type="hidden" name="format" value="markdown" />
+	<input type="hidden" name="original_file_name" value="<?php echo $this->getContext('post')->file_name ?>" />
 	<div class="form-group">
 		<label>Date</label>
 		<input name="date" class="form-control" type="text" value="<?php echo $this->getContext('post')->date ?>" />
@@ -16,7 +17,7 @@
 
 	<div class="form-group">
 		<label>Slug</label>
-		<input name="slug_trimmed" class="form-control" type="text" value="<?php echo $this->getContext('post')->slug_trimmed ?>" />
+		<input name="slug" class="form-control" type="text" value="<?php echo $this->getContext('post')->slug_trimmed ?>" />
 	</div>
 
 	<div class="form-group">

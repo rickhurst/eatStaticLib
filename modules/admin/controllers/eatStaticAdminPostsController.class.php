@@ -11,6 +11,17 @@ class eatStaticAdminPostsController {
 			case "drafts":
 				$this->listDrafts();
 			break;
+			case "edit":
+				switch($path[3]){
+					case "draft":
+						$this->editPost($path[4], $draft=true);
+					break;
+					default:
+						//print_r($path);
+						$this->editPost($path[3]);
+					break;
+				}
+			break;
 			case "edit-raw":
 				switch($path[3]){
 					case "draft":
@@ -88,6 +99,88 @@ class eatStaticAdminPostsController {
 			$post->original_file_name = trim(eatStatic::getValue('original_file_name','post'));
 
 			//die($slug);
+
+			// copy current file data to backups
+			if($slug != 'new'){
+				copy($post->data_file_path, DATA_ROOT.'/posts/backup/'.$post->file_name.'.'.eatStatic::timestamp().'.bak');
+				if($post->original_file_name != $post->file_name){
+
+					//die($post->data_file_path);
+					// remove original
+					unlink($post->data_file_path);
+
+					$new_data_file_path = $post_folder.$post->file_name;
+
+					eatStatic::write_file($post->raw_data, $new_data_file_path);
+
+				} else {
+					eatStatic::write_file($post->raw_data, $post->data_file_path);
+				}
+				
+			} else {
+				$post->data_file_path = $post_folder.$post->file_name;
+				eatStatic::write_file($post->raw_data, $post->data_file_path);
+				header('location:'.ADMIN_ROOT.'posts/drafts/');
+				die();
+			}
+		}
+
+		$page->context['post'] = $post;
+		//print_r($page);
+		//die();
+		$page->render();
+	}
+
+	private function editPost($slug, $draft=false){
+
+		//die($slug);
+
+		$post_folder = DATA_ROOT.'/posts/';
+		if($draft){
+			$post_folder = $post_folder.'draft/';
+		}
+
+		//die($post_folder);
+
+		$page = new adminPage('post_edit.php');
+
+		$post = new eatStaticBlogPost;
+
+		if(file_exists($post_folder.$slug.'.txt')){
+			$post->data_file_path = $post_folder.$slug.'.txt';
+		}
+		if(file_exists($post_folder.$slug.'.md')){
+			$post->data_file_path = $post_folder.$slug.'.md';
+		}
+		if(file_exists($post->data_file_path)){
+			$page->context['title'] = "Edit Post";
+		    $post->hydrate();
+		} else {
+			$page->context['title'] = "New Post";
+			$post->date = date("Y-m-d");
+		}
+
+		if(eatStatic::getValue('postback') == '1'){
+
+			//die($slug);
+
+			$post->raw_body = trim(eatStatic::getValue('content','post'));
+			$post->date = trim(eatStatic::getValue('date','post'));
+			$post->slug_trimmed = trim(eatStatic::getValue('slug','post'));
+			$post->title = trim(eatStatic::getValue('title','post'));
+			$post->raw_meta = trim(eatStatic::getValue('meta','post'));
+
+			$post->file_name = $post->date.'-'.$post->slug_trimmed.'.md';
+			$post->original_file_name = trim(eatStatic::getValue('original_file_name','post'));
+
+			// reassemble 
+			$post->raw_data = $post->title."\n\n";
+			$post->raw_data .= $post->raw_body."\n";
+			$post->raw_data .= "--\n";
+			$post->raw_data .= $post->raw_meta;
+
+			//print_r($post);
+			//die();
 
 			// copy current file data to backups
 			if($slug != 'new'){
