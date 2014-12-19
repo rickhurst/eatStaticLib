@@ -20,7 +20,7 @@ class eatStaticImageCache  extends eatStatic {
 	var $cache_file_name;
 	var $image_cache_folder = 'image-cache';
 	var $cache_sub_folder;
-	var $allowed_widths = array(100,150,200,300,400,500,600,700,900,960,1000,1024); // specify to stop people monkeying with urls
+	var $allowed_widths = array(100,150,200,300,380,400,500,600,700,900,960,1000,1024); // specify to stop people monkeying with urls
 	var $extension;
 	var $out_extension; // the extension after conversion e.g. .Jpeg will become .jpg
 	var $allowed_extensions = array('jpg','jpeg','png');
