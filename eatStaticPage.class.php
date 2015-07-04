@@ -5,5 +5,8 @@ class eatStaticPage {
 	var $template = 'base';
 	var $title;
 	var $class;
+	var $meta_refresh;
+	var $meta_keywords;
+	var $meta_description;
 }
 ?>

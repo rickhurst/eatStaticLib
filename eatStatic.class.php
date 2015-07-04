@@ -322,7 +322,8 @@ class eatStatic {
 				$page_class, 
 				$page_title,
 				$meta_keywords,
-				$meta_description;
+				$meta_description,
+				$meta_refresh;
 				
 		$custom = false;
 		if(file_exists(ROOT."/skin/".SKIN.'/templates/'.$template)){
